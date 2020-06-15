@@ -1,0 +1,4 @@
+2020-06-15 21:54:57,172[INFO ][main            ][                   com.panda.Bot] - TelegramAPI started. Look for messages
+2020-06-15 21:55:30,266[DEBUG][elegram Executor][                   com.panda.Bot] - new Update recieve
+2020-06-15 21:56:24,733[INFO ][main            ][                   com.panda.Bot] - TelegramAPI started. Look for messages
+2020-06-15 21:56:45,462[DEBUG][elegram Executor][                   com.panda.Bot] - Receive new Update. updateID: 376444589
