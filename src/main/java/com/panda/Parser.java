@@ -3,12 +3,8 @@ package com.panda;
 import com.panda.command.Command;
 import com.panda.command.ParsedCommand;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-//import javafx.util.Pair;
 
 /**
  * @author carbon
@@ -31,6 +27,7 @@ public class Parser {  //TODO
     public  ParsedCommand getParsedCommand(String text) {
         Command command = Command.getCommandByNumber(0);
         String textForCommand = "";
+        if (text != null) textForCommand = text.trim();
         String regex = "(\\/)(?<=\\/{1})(\\S+)(\\s+)(.+)";
 
         Pattern p = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
@@ -43,7 +40,9 @@ public class Parser {  //TODO
         return new ParsedCommand(command, textForCommand);
     }
 
-
+    private boolean isCommand(String text) { //TODO
+        return text.startsWith(PREFIX_FOR_COMMAND);
+    }
 
 
    /* public ParsedCommand getParsedCommand(String text) {
@@ -103,7 +102,5 @@ public class Parser {  //TODO
         return true;
     }
 
-    private boolean isCommand(String text) {
-        return text.startsWith(PREFIX_FOR_COMMAND);
-    }*/
+    */
 }
