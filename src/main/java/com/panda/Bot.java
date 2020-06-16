@@ -1,5 +1,6 @@
 package com.panda;
 
+import com.panda.command.ParsedCommand;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -56,6 +57,13 @@ public class Bot extends TelegramLongPollingBot {
 
         Long chatId = update.getMessage().getChatId();
         String inputText = update.getMessage().getText();
+
+        if(!inputText.isEmpty()){
+            Parser parser = new Parser();
+            ParsedCommand parsedCommand = parser.getParsedCommand(inputText);
+            log.info("parsed command -> "+parsedCommand.getCommand());
+            log.info("parsed command text -> "+parsedCommand.getText());
+        }
 
         if (inputText.startsWith("/start")) {
             SendMessage message = new SendMessage();
