@@ -3,6 +3,7 @@ package com.panda;
 import com.panda.command.Command;
 import com.panda.command.ParsedCommand;
 import org.apache.log4j.Logger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,18 +25,29 @@ public class Parser {  //TODO
 
     }
 
-    public  ParsedCommand getParsedCommand(String text) {
+
+    public static ParsedCommand getParsedCommand(String text) {
         Command command = Command.getCommandByNumber(0);
         String textForCommand = "";
         if (text != null) textForCommand = text.trim();
-        String regex = "(\\/)(?<=\\/{1})(\\S+)(\\s+)(.+)";
+//        String regex = "(\\/)(?<=\\/{1})(\\S+)(\\s+)(.+)";
+        String regex = "(\\/)(?<=\\/{1})(\\S+)(\\s+)(.+)|(\\/)(?<=\\/{1})(\\S+)";
 
         Pattern p = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
         Matcher m = p.matcher(text);
         while (m.find()) {
-            command = Command.setCommandByGroup(m.group(2));
-            textForCommand = m.group(4);
+            if (m.group(2) == null && m.group(4) == null) {
+                command = Command.setCommandByGroup(m.group(6));
+                log.info("Command without arguments --> " + command);
+            } else {
+                command = Command.setCommandByGroup(m.group(2));
+                textForCommand = m.group(4);
+                log.info("Command with arguments");
+                log.info("Command --> " + command);
+                log.info("TextForCommand --> " + textForCommand);
+            }
         }
+
 
         return new ParsedCommand(command, textForCommand);
     }
