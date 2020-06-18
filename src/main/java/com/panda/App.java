@@ -41,8 +41,9 @@ public class App {
         sender.setPriority(PRIORITY_FOR_SENDER);
         sender.start();
 
-       /* sendStartReport(bot, ADMIN);
-        sendStartReport(bot, ADMIN2);*/
+
+//        sendStartReport(bot, ADMIN);
+//        sendStartReport(bot, ADMIN2);
 
     }
 

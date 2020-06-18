@@ -17,13 +17,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Bot extends TelegramLongPollingBot {
 
     private static final Logger log = Logger.getLogger(Bot.class);
-    final int RECONNECT_PAUSE =10000;
+    final int RECONNECT_PAUSE = 10000;
     private String name;
     private String token;
     public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>(); //мы не привязываемся к типам полученных сообщений
     public final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
 
     public Bot() {
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Bot(String name, String token) {
@@ -37,25 +41,9 @@ public class Bot extends TelegramLongPollingBot {
         this.token = token;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @Override
     public void onUpdateReceived(Update update) {
-        log.debug("Receive new Update. updateID: " + update.getUpdateId()) ;
+        log.debug("Receive new Update. updateID: " + update.getUpdateId());
         receiveQueue.add(update);
     }
 

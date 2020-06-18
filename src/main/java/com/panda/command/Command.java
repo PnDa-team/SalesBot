@@ -8,8 +8,7 @@ public enum Command {
     NONE, NOTFORME,
 
     NOTIFY,
-    START, HELP, ID,
-
+    START, HELP, ID, CUSTOMER , ADMIN,
     STICKER;
 
     public static Command getCommandByNumber(int number) {

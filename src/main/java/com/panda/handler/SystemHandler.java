@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 /**
  * @author carbon
  * class created 16.06.2020
- *
+ * <p>
  * Займется обработкой базовых команд, таких как start, help и id
  */
 public class SystemHandler extends AbstractHandler {
@@ -38,14 +38,19 @@ public class SystemHandler extends AbstractHandler {
         switch (command) {
             case START:
                 bot.sendQueue.add(getMessageStart(chatId));
+//                bot.sendQueue.add(getChooseMenu());
                 break;
             case HELP:
                 bot.sendQueue.add(getMessageHelp(chatId));
                 break;
             case STICKER:
-                return "StickerID: " + parsedCommand.getText();
+//                return "StickerID: " + parsedCommand.getText();
             case ID:
-                return "Your telegramID: " + update.getMessage().getFrom().getId();
+//                return "Your telegramID: " + update.getMessage().getFrom().getId();
+            case CUSTOMER:
+                return "";
+
+
         }
         return "";
     }
@@ -75,5 +80,14 @@ public class SystemHandler extends AbstractHandler {
         text.append("All that I can do - you can see calling the command [/help](/help)");
         sendMessage.setText(text.toString());
         return sendMessage;
+    }
+
+    private SendMessage getChooseMenu(String chatID){
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatID);
+        sendMessage.enableMarkdown(true);
+
+        return sendMessage;
+
     }
 }
