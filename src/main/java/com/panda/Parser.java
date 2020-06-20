@@ -30,7 +30,6 @@ public class Parser {  //TODO
         Command command = Command.getCommandByNumber(0);
         String textForCommand = "";
         if (text != null) textForCommand = text.trim();
-//        String regex = "(\\/)(?<=\\/{1})(\\S+)(\\s+)(.+)";
         String regex = "(\\/)(?<=\\/{1})(\\S+)(\\s+)(.+)|(\\/)(?<=\\/{1})(\\S+)";
 
         Pattern p = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);

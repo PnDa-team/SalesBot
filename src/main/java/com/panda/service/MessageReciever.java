@@ -3,15 +3,12 @@ package com.panda.service;
 import com.panda.Bot;
 import com.panda.Parser;
 import com.panda.command.Command;
+import com.panda.command.CommandContainer;
 import com.panda.command.ParsedCommand;
-import com.panda.handler.AbstractHandler;
-import com.panda.handler.DefaultHandler;
-import com.panda.handler.SystemHandler;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 
 /**
  * @author carbon
@@ -84,56 +81,14 @@ public class MessageReciever implements Runnable {
 
         if (message.hasText()) {
             parsedCommand = parser.getParsedCommand(message.getText());
-        } else {
-            Sticker sticker = message.getSticker();
-            if (sticker != null) {
-                parsedCommand = new ParsedCommand(Command.STICKER, sticker.getFileId());
-            }
         }
-
-        AbstractHandler handlerForCommand = getHandlerForCommand(parsedCommand.getCommand());
-        String operationResult = handlerForCommand.operate(chatId.toString(), parsedCommand, update);
-
-        if (!"".equals(operationResult)) {
+        String result = CommandContainer.get(parsedCommand.getCommand());
+        if (!"".equals(result)) {
             SendMessage messageOut = new SendMessage();
             messageOut.setChatId(chatId);
-            messageOut.setText(operationResult);
+            messageOut.setText(result);
             bot.sendQueue.add(messageOut);
         }
     }
 
-
-
-    /*TODO Теперь, если вы захотите добавить еще какие-то команды, нужно будет сделать следующее:
-   В классе Command добавить синтаксис команды.
-   getHandlerForCommand указать, кто будет ответственен за обработку этой команды.
-   И собственно написать этот хендлер.
-
-   либо создать мапу <команда-обработчик> и дальше распеределять (наподобие как в финальном)
-    */
-    private AbstractHandler getHandlerForCommand(Command command) {
-        if (command == null) {
-            log.warn("Null command accepted. This is not good scenario.");
-            return new DefaultHandler(bot);
-        }
-        switch (command) {
-            case START:
-            case HELP:
-            case ID:
-                SystemHandler systemHandler = new SystemHandler(bot);
-                log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
-                return systemHandler;
-            /*case NOTIFY:
-                NotifyHandler notifyHandler = new NotifyHandler(bot);
-                log.info("Handler for command[" + command.toString() + "] is: " + notifyHandler);
-                return notifyHandler;*/
-            case STICKER:
-                SystemHandler s = new SystemHandler(bot);
-                log.info("Handler for command[" + command.toString() + "] is: " + s);
-                return s;
-            default:
-                log.warn("Handler for command[" + command.toString() + "] not Set. Return DefaultHandler");
-                return new DefaultHandler(bot);
-        }
-    }
 }
