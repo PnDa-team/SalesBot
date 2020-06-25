@@ -34,7 +34,7 @@ public class MessageReciever implements Runnable {
      */
     @Override
     public void run() {
-        log.info("[STARTED] MsgReciever.  Bot class: " + bot);
+        log.trace("[STARTED] MsgReciever.  Bot class: " + bot);
         while (true) {
             for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
                 log.debug("New object for analyze in queue " + object.toString());
@@ -79,16 +79,19 @@ public class MessageReciever implements Runnable {
 
         ParsedCommand parsedCommand = new ParsedCommand(Command.NONE, "");
 
-        if (message.hasText()) {
+        if (message.hasText()||update.hasCallbackQuery()) {
             parsedCommand = parser.getParsedCommand(message.getText());
         }
-        String result = CommandContainer.get(parsedCommand.getCommand());
-        if (!"".equals(result)) {
-            SendMessage messageOut = new SendMessage();
-            messageOut.setChatId(chatId);
-            messageOut.setText(result);
-            bot.sendQueue.add(messageOut);
-        }
+        SendMessage result = CommandContainer.get(parsedCommand.getCommand());
+//        if (!"".equals(result)) {
+//            SendMessage messageOut = new SendMessage();
+//            messageOut.setChatId(chatId);
+//            messageOut.setText(result);
+//
+//            bot.sendQueue.add(messageOut);
+//        }
+        result.setChatId(chatId);
+        bot.sendQueue.add(result);
     }
 
 }

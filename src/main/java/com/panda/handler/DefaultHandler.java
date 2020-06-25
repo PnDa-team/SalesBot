@@ -3,6 +3,7 @@ package com.panda.handler;
 import com.panda.Bot;
 import com.panda.command.ParsedCommand;
 import org.apache.log4j.Logger;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -21,7 +22,7 @@ public class DefaultHandler extends AbstractHandler {
     }
 
     @Override
-    public String operate(String chatId, ParsedCommand parsedCommand, Update update) {
-        return "";
+    public SendMessage operate(String chatId, ParsedCommand parsedCommand, Update update) {
+        return null;
     }
 }

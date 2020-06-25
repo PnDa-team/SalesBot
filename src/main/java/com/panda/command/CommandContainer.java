@@ -2,6 +2,7 @@ package com.panda.command;
 
 import com.panda.Bot;
 import org.apache.log4j.Logger;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Map;
@@ -24,14 +25,14 @@ public class CommandContainer {
 
     private static final Logger log = Logger.getLogger(CommandContainer.class);
 
-    private static Map<Command, String> commands = new TreeMap<>();
+    private static Map<Command, SendMessage> commands = new TreeMap<>();
 
     static {
         commands.put(Command.START, new StartCommand(bot).operate(chatId, parsedCommand, update));
         commands.put(Command.NONE, new NoneCommand(bot).operate(chatId, parsedCommand, update));
     }
 
-    public static String get(Command commandName) {
+    public static SendMessage get(Command commandName) {
         if (commandName == null || !commands.containsKey(commandName)) {
             log.trace("Command not found, name --> " + commandName);
             return commands.get(Command.NONE);
